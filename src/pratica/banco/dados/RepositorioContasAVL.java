@@ -1,29 +1,29 @@
 package pratica.banco.dados;
 
-public class RepositorioContasAVL {
+public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
 
-    private AvlNode root;
-
-    public boolean insert(int key) {
+    private AvlNode<Object> root;
+    
+    public boolean insert(Object key) {
         if (root == null) {
             root = new AvlNode(key, null);
             return true;
         }
 
-        AvlNode node = root;
+        AvlNode<Object> node = root;
         while (true) {
-            if (node.getKey() == key) {
+            if (node.getInfo().chave == key) {
                 return false;
             }
 
-            AvlNode parent = node;
+            AvlNode<Object> parent = node;
 
-            boolean goLeft = node.getKey() > key;
+            boolean goLeft = node.getInfo().chave > key;
             node = goLeft ? node.getLeft() : node.getRight();
 
             if (node == null) {
                 if (goLeft) {
-                    parent.setLeft(new AvlNode(key, parent))    ;
+                    parent.setLeft(new AvlNode(key, parent));
                 } else {
                     parent.setRight(new AvlNode(key, parent));
                 }
@@ -34,12 +34,12 @@ public class RepositorioContasAVL {
         return true;
     }
 
-    private void delete(AvlNode node) {
+    private void delete(AvlNode<Object> node) {
         if (node.getLeft() == null && node.getRight() == null) {
             if (node.getParent() == null) {
                 root = null;
             } else {
-                AvlNode parent = node.getParent();
+                AvlNode<Object> parent = node.getParent();
                 if (parent.getLeft() == node) {
                     parent.setLeft(null);
                 } else {
@@ -51,39 +51,39 @@ public class RepositorioContasAVL {
         }
 
         if (node.getLeft() != null) {
-            AvlNode child = node.getLeft();
+            AvlNode<Object> child = node.getLeft();
             while (child.getRight() != null) {
                 child = child.getRight();
             }
-            node.setKey(child.getKey());
+            node.setInfo(child.getInfo());
             delete(child);
         } else {
-            AvlNode child = node.getRight();
+            AvlNode<Object> child = node.getRight();
             while (child.getLeft() != null) {
                 child = child.getLeft();
             }
-            node.setKey(child.getKey());
+            node.setInfo(child.getInfo());
             delete(child);
         }
     }
 
-    public void delete(int delKey) {
+    public void delete(int delInfo) {
         if (root == null) {
             return;
         }
 
-        AvlNode child = root;
+        AvlNode<Object> child = root;
         while (child != null) {
-            AvlNode node = child;
-            child = delKey >= node.getKey() ? node.getRight() : node.getLeft();
-            if (delKey == node.getKey()) {
+            AvlNode<Object> node = child;
+            child = delInfo >= node.getInfo().chave ? node.getRight() : node.getLeft();
+            if (delInfo == node.getInfo().chave) {
                 delete(node);
                 return;
             }
         }
     }
 
-    private void rebalance(AvlNode node) {
+    private void rebalance(AvlNode<Object> node) {
         setBalance(node);
 
         if (node.getBalance() == -2) {
@@ -108,9 +108,9 @@ public class RepositorioContasAVL {
         }
     }
 
-    private AvlNode rotateLeft(AvlNode a) {
+    private AvlNode<Object> rotateLeft(AvlNode<Object> a) {
 
-        AvlNode b = a.getRight();
+        AvlNode<Object> b = a.getRight();
         b.setParent(a.getParent());
 
         a.setRight(b.getLeft());
@@ -135,9 +135,9 @@ public class RepositorioContasAVL {
         return b;
     }
 
-    private AvlNode rotateRight(AvlNode a) {
+    private AvlNode<Object> rotateRight(AvlNode<Object> a) {
 
-        AvlNode b = a.getLeft();
+        AvlNode<Object> b = a.getLeft();
         b.setParent(a.getParent());
 
         a.setLeft(b.getRight());
@@ -162,17 +162,17 @@ public class RepositorioContasAVL {
         return b;
     }
 
-    private AvlNode rotateLeftThenRight(AvlNode node) {
+    private AvlNode<Object> rotateLeftThenRight(AvlNode<Object> node) {
         node.setLeft(rotateLeft(node.getLeft()));
         return rotateRight(node);
     }
 
-    private AvlNode rotateRightThenLeft(AvlNode node) {
+    private AvlNode<Object> rotateRightThenLeft(AvlNode<Object> node) {
         node.setRight(rotateRight(node.getRight()));
         return rotateLeft(node);
     }
 
-    private int height(AvlNode node) {
+    private int height(AvlNode<Object> node) {
         if (node == null) {
             return -1;
         }
@@ -180,7 +180,7 @@ public class RepositorioContasAVL {
     }
 
     private void setBalance(AvlNode... nodes) {
-        for (AvlNode node : nodes) {
+        for (AvlNode<Object> node : nodes) {
             reheight(node);
             node.setBalance(height(node.getRight()) - height(node.getLeft()));
         }
@@ -190,7 +190,7 @@ public class RepositorioContasAVL {
         printBalance(root);
     }
 
-    private void printBalance(AvlNode node) {
+    private void printBalance(AvlNode<Object> node) {
         if (node != null) {
             printBalance(node.getLeft());
             System.out.printf("%s ", node.getBalance());
@@ -198,13 +198,13 @@ public class RepositorioContasAVL {
         }
     }
 
-        private void reheight(AvlNode node) {
+        private void reheight(AvlNode<Object> node) {
         if (node != null) {
             node.setHeight(1 + Math.max(height(node.getLeft()), height(node.getRight())));
         }
     }
 
-    public void dump(AvlNode node, int level) {
+    public void dump(AvlNode<Object> node, int level) {
         if (node == null) {
             return;
         }
@@ -213,7 +213,7 @@ public class RepositorioContasAVL {
         for (int i = 0; i < level; ++i) {
             System.out.print("\t\t\t");
         }
-        System.out.println("(key: " + node.getKey() + ", balance:" + node.getBalance() + ")");
+        System.out.println("(key: " + node.getInfo().chave + ", balance:" + node.getBalance() + ")");
         dump(node.getLeft(), level + 1);
     }
 

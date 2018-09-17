@@ -1,25 +1,25 @@
 package pratica.banco.dados;
 
-public class AvlNode {
+public class AvlNode<Object> {
 
-    private int key;
+    private Object info;
     private int balance;
     private int height;
     private AvlNode left;
     private AvlNode right;
     private AvlNode parent;
 
-    AvlNode(int key, AvlNode parent) {
-        this.key = key;
+    AvlNode(Object info, AvlNode parent) {
+        this.info = info;
         this.parent = parent;
     }
 
-    public int getKey() {
-        return key;
+    public Object getInfo() {
+        return info;
     }
 
-    public void setKey(int key) {
-        this.key = key;
+    public void setInfo(Object info) {
+        this.info = info;
     }
 
     public int getBalance() {
