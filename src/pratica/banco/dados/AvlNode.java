@@ -4,10 +4,10 @@ public class AvlNode<Object> {
 
     private Object info;
     private int balance;
-    private int height;
+    private int height;// remover
     private AvlNode left;
     private AvlNode right;
-    private AvlNode parent;
+    private AvlNode parent; // remover
 
     AvlNode(Object info, AvlNode parent) {
         this.info = info;
@@ -61,7 +61,5 @@ public class AvlNode<Object> {
     public void setParent(AvlNode parent) {
         this.parent = parent;
     }
-    
-    
-    
+
 }

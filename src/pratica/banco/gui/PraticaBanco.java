@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pratica.banco.gui;
 
+import pratica.banco.dados.AVLTree;
+import pratica.banco.negocio.Cliente;
 
-
-/**
- *
- * @author pablo
- */
 public class PraticaBanco {
 
-    /**
-     * @param args the command line arguments
-     */
-
-    
+    public static void main(String[] args) {
+        AVLTree<Cliente> tree = new AVLTree();
+        for (int i = 1; i < 10; i++) {
+            tree.insert(new Cliente(Integer.toString(i)));
+//            tree.printTree(tree.root, 0);
+//            System.out.println("_________________________________");
+        }
+        tree.printTree(tree.getRoot(), 0);
+//        System.out.println(tree.search(new Cliente(Integer.toString(5)), tree.getRoot()).getInfo());
+    }
 }

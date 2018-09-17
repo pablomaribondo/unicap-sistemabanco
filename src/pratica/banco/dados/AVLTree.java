@@ -1,9 +1,13 @@
 package pratica.banco.dados;
 
-public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
+public class AVLTree<Object extends Comparable<? super Object>> {
 
     private AvlNode<Object> root;
-    
+
+    public AVLTree() {
+        root = null;
+    }
+
     public boolean insert(Object key) {
         if (root == null) {
             root = new AvlNode(key, null);
@@ -12,13 +16,13 @@ public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
 
         AvlNode<Object> node = root;
         while (true) {
-            if (node.getInfo().chave == key) {
+            if (node.getInfo().compareTo(key) == 0) {
                 return false;
             }
 
             AvlNode<Object> parent = node;
 
-            boolean goLeft = node.getInfo().chave > key;
+            boolean goLeft = node.getInfo().compareTo(key) > 0;
             node = goLeft ? node.getLeft() : node.getRight();
 
             if (node == null) {
@@ -34,7 +38,7 @@ public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
         return true;
     }
 
-    private void delete(AvlNode<Object> node) {
+    private void remove(AvlNode<Object> node) {
         if (node.getLeft() == null && node.getRight() == null) {
             if (node.getParent() == null) {
                 root = null;
@@ -56,18 +60,18 @@ public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
                 child = child.getRight();
             }
             node.setInfo(child.getInfo());
-            delete(child);
+            remove(child);
         } else {
             AvlNode<Object> child = node.getRight();
             while (child.getLeft() != null) {
                 child = child.getLeft();
             }
             node.setInfo(child.getInfo());
-            delete(child);
+            remove(child);
         }
     }
 
-    public void delete(int delInfo) {
+    public void remove(Object delInfo) {
         if (root == null) {
             return;
         }
@@ -75,9 +79,9 @@ public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
         AvlNode<Object> child = root;
         while (child != null) {
             AvlNode<Object> node = child;
-            child = delInfo >= node.getInfo().chave ? node.getRight() : node.getLeft();
-            if (delInfo == node.getInfo().chave) {
-                delete(node);
+            child = node.getInfo().compareTo(delInfo) <= 0 ? node.getRight() : node.getLeft();
+            if (node.getInfo().compareTo(delInfo) == 0) {
+                remove(node);
                 return;
             }
         }
@@ -86,14 +90,14 @@ public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
     private void rebalance(AvlNode<Object> node) {
         setBalance(node);
 
-        if (node.getBalance() == -2) {
+        if (node.getBalance() < -1) {
             if (height(node.getLeft().getLeft()) >= height(node.getLeft().getRight())) {
                 node = rotateRight(node);
             } else {
                 node = rotateLeftThenRight(node);
             }
 
-        } else if (node.getBalance() == 2) {
+        } else if (node.getBalance() > 1) {
             if (height(node.getRight().getRight()) >= height(node.getRight().getLeft())) {
                 node = rotateLeft(node);
             } else {
@@ -179,6 +183,12 @@ public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
         return node.getHeight();
     }
 
+    private void reheight(AvlNode<Object> node) {
+        if (node != null) {
+            node.setHeight(1 + Math.max(height(node.getLeft()), height(node.getRight())));
+        }
+    }
+
     private void setBalance(AvlNode... nodes) {
         for (AvlNode<Object> node : nodes) {
             reheight(node);
@@ -198,36 +208,60 @@ public class RepositorioContasAVL<Object extends Comparable<? super Object>> {
         }
     }
 
-        private void reheight(AvlNode<Object> node) {
-        if (node != null) {
-            node.setHeight(1 + Math.max(height(node.getLeft()), height(node.getRight())));
+    private AvlNode findMin(AvlNode node) {
+        if (node == null) {
+            return node;
         }
+
+        while (node.getLeft() != null) {
+            node = node.getLeft();
+        }
+        return node;
     }
 
-    public void dump(AvlNode<Object> node, int level) {
+    private AvlNode findMax(AvlNode node) {
+        if (node == null) {
+            return node;
+        }
+
+        while (node.getRight() != null) {
+            node = node.getRight();
+        }
+        return node;
+    }
+
+    public AvlNode search(Comparable c, AvlNode node) {
+        while (node != null) {
+            if (c.compareTo(node.getInfo()) < 0) {
+                node = node.getLeft();
+            } else if (c.compareTo(node.getInfo()) > 0) {
+                node = node.getRight();
+            } else {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    public boolean isEmpty() {
+        return root == null;
+    }
+
+    public void printTree(AvlNode<Object> node, int level) {
         if (node == null) {
             return;
         }
 
-        dump(node.getRight(), level + 1);
+        printTree(node.getRight(), level + 1);
         for (int i = 0; i < level; ++i) {
             System.out.print("\t\t\t");
         }
-        System.out.println("(key: " + node.getInfo().chave + ", balance:" + node.getBalance() + ")");
-        dump(node.getLeft(), level + 1);
+        System.out.println("(" + node.getInfo() + ", balance:" + node.getBalance() + ")");
+        printTree(node.getLeft(), level + 1);
     }
 
-    public static void main(String[] args) {
-        RepositorioContasAVL tree = new RepositorioContasAVL();
-
-        System.out.println("Inserting values 1 to 10");
-        for (int i = 1; i < 10; i++) {
-            tree.insert(i);
-            tree.dump(tree.root, 0);
-            System.out.println("====================");
-        }
-
-        System.out.print("Printing balance: ");
-        tree.printBalance();
+    public AvlNode<Object> getRoot() {
+        return root;
     }
+
 }
