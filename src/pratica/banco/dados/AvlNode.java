@@ -1,17 +1,15 @@
 package pratica.banco.dados;
 
-public class AvlNode<Object> {
+public class AvlNode<Object extends Comparable<? super Object>> {
 
     private Object info;
     private int balance;
-    private int height;// remover
     private AvlNode left;
     private AvlNode right;
-    private AvlNode parent; // remover
 
-    AvlNode(Object info, AvlNode parent) {
+    AvlNode(Object info) {
         this.info = info;
-        this.parent = parent;
+        this.balance = 0;
     }
 
     public Object getInfo() {
@@ -30,14 +28,6 @@ public class AvlNode<Object> {
         this.balance = balance;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
     public AvlNode getLeft() {
         return left;
     }
@@ -52,14 +42,6 @@ public class AvlNode<Object> {
 
     public void setRight(AvlNode right) {
         this.right = right;
-    }
-
-    public AvlNode getParent() {
-        return parent;
-    }
-
-    public void setParent(AvlNode parent) {
-        this.parent = parent;
     }
 
 }
