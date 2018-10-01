@@ -28,7 +28,11 @@ public class CadastroClientes {
         clientes.update(cliente);
     }
 
-    public void remove(Cliente cliente) throws ClienteInexistenteException {
-        clientes.remove(cliente);
+    public Cliente remove(Cliente cliente) throws ClienteInexistenteException {
+        return clientes.remove(cliente);
+    }
+    
+    public Cliente removeRoot() throws ClienteInexistenteException {
+        return clientes.removeRoot();
     }
 }

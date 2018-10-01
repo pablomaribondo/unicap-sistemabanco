@@ -10,46 +10,57 @@ public class RepositorioContasAVL implements IRepositorioContas {
     private AVLTree<ContaAbstrata> contas;
 
     public RepositorioContasAVL() {
-        contas = new AVLTree<ContaAbstrata>();
+        contas = new AVLTree<>();
     }
 
-    public void insert(ContaAbstrata cliente) throws ContaExistenteException {
-        if (exists(cliente.getNumero()) == null) {
-            contas.insert(cliente);
+    public void insert(ContaAbstrata conta) throws ContaExistenteException {
+        if (exists(conta.getNumero()) == null) {
+            contas.insert(conta);
         } else {
-            throw new ContaExistenteException(cliente.getNumero());
+            throw new ContaExistenteException(conta.getNumero());
         }
     }
 
     public ContaAbstrata search(String numero) throws ContaInexistenteException {
-        ContaAbstrata cliente = exists(numero);
-        if (cliente != null) {
-            return cliente;
+        ContaAbstrata conta = exists(numero);
+        if (conta != null) {
+            return conta;
         } else {
             throw new ContaInexistenteException(numero);
         }
     }
 
-    public void update(ContaAbstrata cliente) throws ContaInexistenteException {
-        if (exists(cliente.getNumero()) != null) {
-            contas.remove(cliente);
-            contas.insert(cliente);
+    public void update(ContaAbstrata conta) throws ContaInexistenteException {
+        if (exists(conta.getNumero()) != null) {
+            contas.remove(conta);
+            contas.insert(conta);
         } else {
-            throw new ContaInexistenteException(cliente.getNumero());
+            throw new ContaInexistenteException(conta.getNumero());
         }
     }
 
-    public void remove(ContaAbstrata cliente) throws ContaInexistenteException {
-        if (exists(cliente.getNumero()) != null) {
-            contas.remove(cliente);
+    public ContaAbstrata remove(ContaAbstrata conta) throws ContaInexistenteException {
+        if (exists(conta.getNumero()) != null) {
+            contas.remove(conta);
+            return conta;
         } else {
-            throw new ContaInexistenteException(cliente.getNumero());
+            throw new ContaInexistenteException(conta.getNumero());
+        }
+    }
+    
+    public ContaAbstrata removeRoot() throws ContaInexistenteException {
+        if (contas.getRoot() != null) {
+            ContaAbstrata root = contas.getRoot().getInfo();
+            contas.remove(root);
+            return root;
+        } else {
+            throw new ContaInexistenteException("Empty tree!");
         }
     }
 
     public ContaAbstrata exists(String numero) {
-        ContaAbstrata cliente = (ContaAbstrata) contas.search(numero, contas.getRoot()).getInfo();
-        return cliente != null ? cliente : null;
+        ContaAbstrata conta = (ContaAbstrata) contas.search(numero, contas.getRoot()).getInfo();
+        return conta != null ? conta : null;
     }
 
 }

@@ -10,14 +10,14 @@ public abstract class ContaAbstrata implements Comparable<ContaAbstrata> {
     private TipoConta tipo;
 
     public ContaAbstrata(String numero, Cliente cliente) {
-        // Chama o construtor sobrecarregado desta classe que recebe um número, um saldo e um cliente. Neste caso, passa zero para o saldo.
-        this(numero, 0, cliente);
+        this(numero, 0, cliente, null);
     }
 
-    public ContaAbstrata(String numero, double saldo, Cliente cliente) {
+    public ContaAbstrata(String numero, double saldo, Cliente cliente, TipoConta tipo) {
         setNumero(numero);
         setSaldo(saldo);
         setCliente(cliente);
+        setTipo(tipo);
     }
 
     public String getNumero() {
@@ -59,7 +59,6 @@ public abstract class ContaAbstrata implements Comparable<ContaAbstrata> {
     public abstract void debitar(double valor) throws SaldoInsuficienteException;
 
     public void transferir(ContaAbstrata conta, double valor) throws SaldoInsuficienteException {
-        // Só precisa passar uma conta no parâmetro, porque uma já está em ação.
         this.debitar(valor);
         conta.creditar(valor);
     }
@@ -67,10 +66,15 @@ public abstract class ContaAbstrata implements Comparable<ContaAbstrata> {
     public boolean equals(ContaAbstrata conta) {
         return this.numero.equals(conta.getNumero());
     }
-    
+
     @Override
     public int compareTo(ContaAbstrata conta) {
         return numero.compareTo(conta.getNumero());
+    }
+
+    @Override
+    public String toString() {
+        return "Número: " + numero + ", tipo:" + tipo + ", saldo: " + saldo + ", cliente: " + cliente;
     }
 
 }

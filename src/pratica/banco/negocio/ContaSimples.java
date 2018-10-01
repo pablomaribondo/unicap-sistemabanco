@@ -8,8 +8,8 @@ public class ContaSimples extends ContaAbstrata {
         super(numero, cliente);
     }
 
-    public ContaSimples(String numero, double saldo, Cliente cliente) {
-        super(numero, saldo, cliente);
+    public ContaSimples(String numero, double saldo, Cliente cliente, TipoConta tipo) {
+        super(numero, saldo, cliente, tipo);
     }
 
     public void debitar(double valor) throws SaldoInsuficienteException {

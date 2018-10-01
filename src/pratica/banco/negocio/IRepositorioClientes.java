@@ -11,7 +11,9 @@ public interface IRepositorioClientes {
 
     void update(Cliente cliente) throws ClienteInexistenteException;
 
-    void remove(Cliente cliente) throws ClienteInexistenteException;
+    Cliente remove(Cliente cliente) throws ClienteInexistenteException;
+
+    Cliente removeRoot() throws ClienteInexistenteException;
 
     Cliente exists(String cpf);
 

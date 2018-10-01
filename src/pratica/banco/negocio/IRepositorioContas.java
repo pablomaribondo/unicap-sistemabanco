@@ -11,7 +11,9 @@ public interface IRepositorioContas {
 
     void update(ContaAbstrata conta) throws ContaInexistenteException;
 
-    void remove(ContaAbstrata conta) throws ContaInexistenteException;
+    ContaAbstrata remove(ContaAbstrata conta) throws ContaInexistenteException;
+
+    ContaAbstrata removeRoot() throws ContaInexistenteException;
 
     ContaAbstrata exists(String numero);
 

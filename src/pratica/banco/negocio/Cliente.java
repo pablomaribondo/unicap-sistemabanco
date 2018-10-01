@@ -7,6 +7,13 @@ public class Cliente implements Comparable<Cliente> {
     private String email;
     private String telefone;
 
+    public Cliente(String cpf, String nome, String email, String telefone) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+    }
+
     public Cliente(String cpf) {
         this.cpf = cpf;
     }
@@ -50,7 +57,7 @@ public class Cliente implements Comparable<Cliente> {
 
     @Override
     public String toString() {
-        return "CPF:" + cpf;
+        return "CPF:" + cpf + ", nome:" + nome + ", email:" + email + ", telefone:" + telefone;
     }
 
 }

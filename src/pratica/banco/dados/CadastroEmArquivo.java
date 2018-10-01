@@ -56,7 +56,7 @@ public class CadastroEmArquivo<Object> {
         }
     }
 
-    public void writeObjectOnFile (Object object) {
+    public void writeObjectOnFile(Object object) {
         try {
             if (output != null) {
                 output.writeObject(object);
@@ -68,7 +68,7 @@ public class CadastroEmArquivo<Object> {
         }
     }
 
-    public Object readObjectFromFile () {
+    public Object readObjectFromFile() {
         Object object;
         try {
             if (input != null) {
@@ -77,10 +77,7 @@ public class CadastroEmArquivo<Object> {
             }
         } catch (EOFException ex) {
 //            System.err.println("EOF");
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
-            System.exit(1);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             System.err.println(ex.getMessage());
             System.exit(1);
         }

@@ -10,7 +10,7 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
     private AVLTree<Cliente> clientes;
 
     public RepositorioClientesAVL() {
-        clientes = new AVLTree<Cliente>();
+        clientes = new AVLTree<>();
     }
 
     public void insert(Cliente cliente) throws ClienteExistenteException {
@@ -39,11 +39,22 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
         }
     }
 
-    public void remove(Cliente cliente) throws ClienteInexistenteException {
+    public Cliente remove(Cliente cliente) throws ClienteInexistenteException {
         if (exists(cliente.getCpf()) != null) {
             clientes.remove(cliente);
+            return cliente;
         } else {
             throw new ClienteInexistenteException(cliente.getCpf());
+        }
+    }
+    
+    public Cliente removeRoot() throws ClienteInexistenteException {
+        if (clientes.getRoot() != null) {
+            Cliente root = clientes.getRoot().getInfo();
+            clientes.remove(root);
+            return root;
+        } else {
+            throw new ClienteInexistenteException("Empty tree!");
         }
     }
 
