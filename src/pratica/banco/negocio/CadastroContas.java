@@ -1,5 +1,6 @@
 package pratica.banco.negocio;
 
+import java.util.ArrayList;
 import pratica.banco.exceptions.ContaExistenteException;
 import pratica.banco.exceptions.ContaInexistenteException;
 import pratica.banco.exceptions.SaldoInsuficienteException;
@@ -31,9 +32,13 @@ public class CadastroContas {
     public ContaAbstrata remove(ContaAbstrata conta) throws ContaInexistenteException {
         return contas.remove(conta);
     }
-    
+
     public ContaAbstrata removeRoot() throws ContaInexistenteException {
         return contas.removeRoot();
+    }
+
+    public ArrayList<ContaAbstrata> inorderIterate(ArrayList<ContaAbstrata> list) {
+        return contas.inorderIterate(list);
     }
 
     public void creditar(String numero, double valor) throws ContaInexistenteException {

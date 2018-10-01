@@ -1,5 +1,7 @@
 package pratica.banco.dados;
 
+import java.util.ArrayList;
+
 public class AVLTree<Object extends Comparable<? super Object>> {
 
     private AvlNode<Object> root;
@@ -263,6 +265,17 @@ public class AVLTree<Object extends Comparable<? super Object>> {
             System.out.printf("%s ", node.getBalance());
             printBalance(node.getRight());
         }
+    }
+
+    public ArrayList<Object> inorderIterate(AvlNode<Object> root, ArrayList<Object> list) {
+        if (root == null) {
+            return null;
+        } else {
+            inorderIterate(root.getLeft(), list);
+            list.add(root.getInfo());
+            inorderIterate(root.getRight(), list);
+        }
+        return list;
     }
 
 }

@@ -1,7 +1,9 @@
 package pratica.banco.negocio;
 
+import java.util.ArrayList;
 import pratica.banco.dados.RepositorioClientesAVL;
 import pratica.banco.dados.RepositorioContasAVL;
+import pratica.banco.exceptions.ClienteContaCadastradaException;
 import pratica.banco.exceptions.ClienteExistenteException;
 import pratica.banco.exceptions.ClienteInexistenteException;
 import pratica.banco.exceptions.ClienteInvalidoException;
@@ -39,10 +41,23 @@ public class Fachada {
         clientes.insert(cliente);
     }
 
-    public Cliente removerCliente(Cliente cliente) throws ClienteInexistenteException {
-        return clientes.remove(cliente);
+    public Cliente removerCliente(Cliente cliente) throws ClienteInexistenteException, ClienteContaCadastradaException {
+        ArrayList<ContaAbstrata> elements = new ArrayList<>();
+        ArrayList<ContaAbstrata> accounts = new ArrayList<>();
+        elements = inorderIterate(elements);
+        for (ContaAbstrata element : elements) {
+            if (cliente.getCpf().equals(element.getCliente().getCpf())) {
+                accounts.add(element);
+            }
+        }
+        if (accounts.size() == 0) {
+            return clientes.remove(cliente);
+        } else {
+            throw new ClienteContaCadastradaException(cliente.getCpf());
+        }
+
     }
-    
+
     public Cliente removerClienteRaiz() throws ClienteInexistenteException {
         return clientes.removeRoot();
     }
@@ -68,17 +83,21 @@ public class Fachada {
     public void removerConta(ContaAbstrata conta) throws ContaInexistenteException {
         contas.remove(conta);
     }
-    
+
     public ContaAbstrata removerContaRaiz() throws ContaInexistenteException {
         return contas.removeRoot();
     }
-    
+
     public void atualizarConta(ContaAbstrata conta) throws ContaInexistenteException {
         contas.update(conta);
     }
 
     public ContaAbstrata procurarConta(String numero) throws ContaInexistenteException {
         return contas.search(numero);
+    }
+
+    public ArrayList<ContaAbstrata> inorderIterate(ArrayList<ContaAbstrata> list) {
+        return contas.inorderIterate(list);
     }
 
     public void creditar(String numero, double valor) throws ContaInexistenteException {

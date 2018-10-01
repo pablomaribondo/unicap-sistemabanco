@@ -1,5 +1,6 @@
 package pratica.banco.dados;
 
+import java.util.ArrayList;
 import pratica.banco.exceptions.ContaExistenteException;
 import pratica.banco.exceptions.ContaInexistenteException;
 import pratica.banco.negocio.ContaAbstrata;
@@ -30,6 +31,10 @@ public class RepositorioContasAVL implements IRepositorioContas {
         }
     }
 
+    public ArrayList<ContaAbstrata> inorderIterate(ArrayList<ContaAbstrata> list) {
+        return contas.inorderIterate(contas.getRoot(), list);
+    }
+
     public void update(ContaAbstrata conta) throws ContaInexistenteException {
         if (exists(conta.getNumero()) != null) {
             contas.remove(conta);
@@ -47,7 +52,7 @@ public class RepositorioContasAVL implements IRepositorioContas {
             throw new ContaInexistenteException(conta.getNumero());
         }
     }
-    
+
     public ContaAbstrata removeRoot() throws ContaInexistenteException {
         if (contas.getRoot() != null) {
             ContaAbstrata root = contas.getRoot().getInfo();
