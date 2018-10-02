@@ -5,13 +5,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import pratica.banco.dados.CadastroEmArquivo;
+import pratica.banco.dados.RepositorioClientesAVL;
 import pratica.banco.exceptions.ClienteContaCadastradaException;
 import pratica.banco.exceptions.ClienteExistenteException;
 import pratica.banco.exceptions.ClienteInexistenteException;
 import pratica.banco.exceptions.ClienteInvalidoException;
 import pratica.banco.exceptions.ContaExistenteException;
 import pratica.banco.exceptions.ContaInexistenteException;
+import pratica.banco.exceptions.SaldoInsuficienteException;
 import pratica.banco.negocio.Cliente;
 import pratica.banco.negocio.ContaAbstrata;
 import pratica.banco.negocio.ContaParaSalvar;
@@ -166,7 +170,8 @@ public class PraticaBanco {
     public static void menuContas() {
         Fachada fachada = Fachada.obterInstancia();
         int option = 100, tipoconta;
-        String cpf,numero;
+        double valor;
+        String cpf, numero, numeroDestino;
         ContaAbstrata conta;
         Cliente cliente;
 
@@ -174,7 +179,7 @@ public class PraticaBanco {
             try {
                 System.out.println("------------------------\n\tMENU CONTAS\n------------------------\n");
                 System.out.println("1. CADASTRAR NOVA CONTA\n2. PROCURAR CONTA\n"
-                        + "4. REMOVER CONTA\n5. DEBITAR\n6. CREDITAR\n7. TRANSFERIR9. VOLTAR PARA MENU PRINCIPAL\n0. SAIR DO SISTEMA");
+                        + "3. REMOVER CONTA\n4. DEBITAR\n5. CREDITAR\n6. TRANSFERIR\n9. VOLTAR PARA MENU PRINCIPAL\n0. SAIR DO SISTEMA");
                 System.out.print("\nDIGITE AQUI SUA OPCAO: ");
                 BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
                 option = Integer.parseInt(read.readLine());
@@ -222,6 +227,47 @@ public class PraticaBanco {
                             System.err.println(ex.getMessage());
                         }
                         break;
+                    case 4:
+                        System.out.print("\nDIGITE O NUMERO DA CONTA: ");
+                        numero = read.readLine();
+                        try {
+                            conta = fachada.procurarConta(numero);
+                            System.out.println(conta);
+                            System.out.print("\nDIGITE O VALOR: ");
+                            valor = Double.parseDouble(read.readLine());
+                            fachada.debitar(numero, valor);
+                        } catch (ContaInexistenteException | SaldoInsuficienteException ex) {
+                            System.err.println(ex.getMessage());
+                        }
+                        break;
+                    case 5:
+                        System.out.print("\nDIGITE O NUMERO DA CONTA: ");
+                        numero = read.readLine();
+                        try {
+                            conta = fachada.procurarConta(numero);
+                            System.out.println(conta);
+                            System.out.print("\nDIGITE O VALOR: ");
+                            valor = Double.parseDouble(read.readLine());
+                            fachada.creditar(numero, valor);
+                        } catch (ContaInexistenteException ex) {
+                            System.err.println(ex.getMessage());
+                        }
+                        break;
+                    case 6:
+                        System.out.print("\nDIGITE O NUMERO DA CONTA ORIGEM: ");
+                        numero = read.readLine();
+                        try {
+                            fachada.procurarConta(numero);
+                            System.out.print("\nDIGITE O NUMERO DA CONTA DESTINO: ");
+                            numeroDestino = read.readLine();
+                            fachada.procurarConta(numeroDestino);
+                            System.out.print("\nDIGITE O VALOR: ");
+                            valor = Double.parseDouble(read.readLine());
+                            fachada.transferir(numero, numeroDestino, valor);
+                        } catch (ContaInexistenteException | SaldoInsuficienteException ex) {
+                            System.err.println(ex.getMessage());
+                        }
+                        break;
                     case 9:
                         System.out.println("\nVOLTAR PARA MENU PRINCIPAL");
                         menuPrincipal();
@@ -240,80 +286,182 @@ public class PraticaBanco {
 
     public static void main(String[] args) {
         Fachada fachada = Fachada.obterInstancia();
-
-        CadastroEmArquivo<ContaParaSalvar> cadastroEmArquivoContas = new CadastroEmArquivo();
-        String nomeArquivoContas = "contas.dat";
-        File arquivoContas = new File(nomeArquivoContas);
-
-        CadastroEmArquivo<Cliente> cadastroEmArquivoClientes = new CadastroEmArquivo();
-        String nomeArquivoClientes = "clientes.dat";
-        File arquivoClientes = new File(nomeArquivoClientes);
-
-        TipoConta tipo;
-        ContaAbstrata conta;
-        ContaParaSalvar contaparasalvar;
-        Cliente cliente;
-
-        if (arquivoClientes.exists()) {
-            cadastroEmArquivoClientes.opentoRead(nomeArquivoClientes);
-            try {
-                do {
-                    cliente = cadastroEmArquivoClientes.readObjectFromFile();
-                    if (cliente != null) {
-                        fachada.cadastrarCliente(cliente);
-                    }
-                } while (cliente != null);
-                cadastroEmArquivoContas.closeAfterRead();
-            } catch (ClienteExistenteException ex) {
-                System.err.println(ex.getMessage());
-            }
+//
+//        CadastroEmArquivo<ContaParaSalvar> cadastroEmArquivoContas = new CadastroEmArquivo();
+//        String nomeArquivoContas = "contas.dat";
+//        File arquivoContas = new File(nomeArquivoContas);
+//
+//        CadastroEmArquivo<Cliente> cadastroEmArquivoClientes = new CadastroEmArquivo();
+//        String nomeArquivoClientes = "clientes.dat";
+//        File arquivoClientes = new File(nomeArquivoClientes);
+//
+//        TipoConta tipo;
+//        ContaAbstrata conta;
+//        ContaParaSalvar contaparasalvar;
+//        Cliente cliente;
+//
+//        if (arquivoClientes.exists()) {
+//            cadastroEmArquivoClientes.opentoRead(nomeArquivoClientes);
+//            try {
+//                do {
+//                    cliente = cadastroEmArquivoClientes.readObjectFromFile();
+//                    if (cliente != null) {
+//                        fachada.cadastrarCliente(cliente);
+//                    }
+//                } while (cliente != null);
+//                cadastroEmArquivoContas.closeAfterRead();
+//            } catch (ClienteExistenteException ex) {
+//                System.err.println(ex.getMessage());
+//            }
+//        }
+//
+//        if (arquivoContas.exists()) {
+//            cadastroEmArquivoContas.opentoRead(nomeArquivoContas);
+//            try {
+//                do {
+//                    contaparasalvar = cadastroEmArquivoContas.readObjectFromFile();
+//                    if (contaparasalvar != null) {
+//                        cliente = fachada.procurarCliente(contaparasalvar.getCpfCliente());
+//                        tipo = contaparasalvar.getTipo();
+//                        conta = tipo.instanciar(contaparasalvar.getNumero(), contaparasalvar.getSaldo(), cliente);
+//                        fachada.cadastrarConta(conta);
+//                    }
+//                } while (contaparasalvar != null);
+//                cadastroEmArquivoContas.closeAfterRead();
+//            } catch (ContaExistenteException | ClienteInexistenteException | ClienteInvalidoException ex) {
+//                System.err.println(ex.getMessage());
+//            }
+//        }
+//        menuPrincipal();
+//        cadastroEmArquivoContas.openToWrite(nomeArquivoContas);
+//        try {
+//            do {
+//                conta = fachada.removerContaRaiz();
+//                if (conta != null) {
+//                    contaparasalvar = new ContaParaSalvar(conta.getNumero(), conta.getSaldo(), conta.getCliente().getCpf(), conta.getTipo());
+//                    cadastroEmArquivoContas.writeObjectOnFile(contaparasalvar);
+//                }
+//            } while (conta != null);
+//        } catch (ContaInexistenteException ex) {
+//            System.err.println(ex.getMessage());
+//        }
+//        cadastroEmArquivoContas.closeAfterWrite();
+//
+//        cadastroEmArquivoContas.openToWrite(nomeArquivoClientes);
+//        try {
+//            do {
+//                cliente = fachada.removerClienteRaiz();
+//                if (cliente != null) {
+//                    cadastroEmArquivoClientes.writeObjectOnFile(cliente);
+//                }
+//            } while (cliente != null);
+//        } catch (ClienteInexistenteException ex) {
+//            System.err.println(ex.getMessage());
+//        }
+//        cadastroEmArquivoContas.closeAfterWrite();
+        
+        
+        
+//        Fachada fachada = Fachada.obterInstancia();
+//
+//        CadastroEmArquivo<ContaParaSalvar> cadastroEmArquivoContas = new CadastroEmArquivo();
+//        String nomeArquivoContas = "contas.dat";
+//        File arquivoContas = new File(nomeArquivoContas);
+//
+//        CadastroEmArquivo<Cliente> cadastroEmArquivoClientes = new CadastroEmArquivo();
+//        String nomeArquivoClientes = "clientes.dat";
+//        File arquivoClientes = new File(nomeArquivoClientes);
+//
+//        TipoConta tipo;
+//        ContaAbstrata conta;
+//        ContaParaSalvar contaparasalvar;
+//        Cliente cliente;
+//
+//        if (arquivoClientes.exists()) {
+//            cadastroEmArquivoClientes.opentoRead(nomeArquivoClientes);
+//            try {
+//                do {
+//                    cliente = cadastroEmArquivoClientes.readObjectFromFile();
+//                    if (cliente != null) {
+//                        fachada.cadastrarCliente(cliente);
+//                    }
+//                } while (cliente != null);
+//                cadastroEmArquivoContas.closeAfterRead();
+//            } catch (ClienteExistenteException ex) {
+//                System.err.println(ex.getMessage());
+//            }
+//        }
+//
+//        if (arquivoContas.exists()) {
+//            cadastroEmArquivoContas.opentoRead(nomeArquivoContas);
+//            try {
+//                do {
+//                    contaparasalvar = cadastroEmArquivoContas.readObjectFromFile();
+//                    if (contaparasalvar != null) {
+//                        cliente = fachada.procurarCliente(contaparasalvar.getCpfCliente());
+//                        tipo = contaparasalvar.getTipo();
+//                        conta = tipo.instanciar(contaparasalvar.getNumero(), contaparasalvar.getSaldo(), cliente);
+//                        fachada.cadastrarConta(conta);
+//                    }
+//                } while (contaparasalvar != null);
+//                cadastroEmArquivoContas.closeAfterRead();
+//            } catch (ContaExistenteException | ClienteInexistenteException | ClienteInvalidoException ex) {
+//                System.err.println(ex.getMessage());
+//            }
+//        }
+try {
+    
+    for (int i = 0; i < 24; i++) {
+        if (i < 9) {
+            fachada.cadastrarCliente(new Cliente("00" + (i + 1), "nome", "email", "fone"));
+        } else {
+            fachada.cadastrarCliente(new Cliente("0" + (i + 1), "nome", "email", "fone"));
         }
-
-        if (arquivoContas.exists()) {
-            cadastroEmArquivoContas.opentoRead(nomeArquivoContas);
-            try {
-                do {
-                    contaparasalvar = cadastroEmArquivoContas.readObjectFromFile();
-                    if (contaparasalvar != null) {
-                        cliente = fachada.procurarCliente(contaparasalvar.getCpfCliente());
-                        tipo = contaparasalvar.getTipo();
-                        conta = tipo.instanciar(contaparasalvar.getNumero(), contaparasalvar.getSaldo(), cliente);
-                        fachada.cadastrarConta(conta);
-                    }
-                } while (contaparasalvar != null);
-                cadastroEmArquivoContas.closeAfterRead();
-            } catch (ContaExistenteException | ClienteInexistenteException | ClienteInvalidoException ex) {
-                System.err.println(ex.getMessage());
-            }
+    }
+    
+    for (int i = 0; i < 6; i++) {
+        if (i < 9) {
+            fachada.removerCliente(new Cliente("00" + (i + 1), "nome", "email", "fone"));
+        } else {
+            fachada.removerCliente(new Cliente("0" + i, "nome", "email", "fone"));
         }
+    }
+    
+//    fachada.removerCliente(new Cliente("024", "nome", "email", "fone"));
+//    fachada.removerCliente(new Cliente("007", "nome", "email", "fone"));
+//    fachada.removerCliente(new Cliente("006", "nome", "email", "fone"));
+    fachada.exibirClientes();
+    
+} catch (ClienteExistenteException | ClienteInexistenteException | ClienteContaCadastradaException ex) {
+    System.err.println(ex.getMessage());
+}
+//        menuPrincipal();
 
-        menuPrincipal();
-
-        cadastroEmArquivoContas.openToWrite(nomeArquivoContas);
-        try {
-            do {
-                conta = fachada.removerContaRaiz();
-                if (conta != null) {
-                    contaparasalvar = new ContaParaSalvar(conta.getNumero(), conta.getSaldo(), conta.getCliente().getCpf(), conta.getTipo());
-                    cadastroEmArquivoContas.writeObjectOnFile(contaparasalvar);
-                }
-            } while (conta != null);
-        } catch (ContaInexistenteException ex) {
-            System.err.println(ex.getMessage());
-        }
-        cadastroEmArquivoContas.closeAfterWrite();
-
-        cadastroEmArquivoContas.openToWrite(nomeArquivoClientes);
-        try {
-            do {
-                cliente = fachada.removerClienteRaiz();
-                if (cliente != null) {
-                    cadastroEmArquivoClientes.writeObjectOnFile(cliente);
-                }
-            } while (cliente != null);
-        } catch (ClienteInexistenteException ex) {
-            System.err.println(ex.getMessage());
-        }
-        cadastroEmArquivoContas.closeAfterWrite();
+//        cadastroEmArquivoContas.openToWrite(nomeArquivoContas);
+//        try {
+//            do {
+//                conta = fachada.removerContaRaiz();
+//                if (conta != null) {
+//                    contaparasalvar = new ContaParaSalvar(conta.getNumero(), conta.getSaldo(), conta.getCliente().getCpf(), conta.getTipo());
+//                    cadastroEmArquivoContas.writeObjectOnFile(contaparasalvar);
+//                }
+//            } while (conta != null);
+//        } catch (ContaInexistenteException ex) {
+//            System.err.println(ex.getMessage());
+//        }
+//        cadastroEmArquivoContas.closeAfterWrite();
+//
+//        cadastroEmArquivoContas.openToWrite(nomeArquivoClientes);
+//        try {
+//            do {
+//                cliente = fachada.removerClienteRaiz();
+//                if (cliente != null) {
+//                    cadastroEmArquivoClientes.writeObjectOnFile(cliente);
+//                }
+//            } while (cliente != null);
+//        } catch (ClienteInexistenteException ex) {
+//            System.err.println(ex.getMessage());
+//        }
+//        cadastroEmArquivoContas.closeAfterWrite();
     }
 }

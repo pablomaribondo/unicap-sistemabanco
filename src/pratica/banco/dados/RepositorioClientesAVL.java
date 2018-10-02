@@ -59,8 +59,12 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
     }
 
     public Cliente exists(String cpf) {
-        Cliente cliente = (Cliente) clientes.search(cpf, clientes.getRoot()).getInfo();
-        return cliente != null ? cliente : null;
+        AvlNode cliente = clientes.search(new Cliente(cpf), clientes.getRoot());
+        return cliente != null ? (Cliente) cliente.getInfo() : null;
+    }
+    
+    public void display() {
+        clientes.display(clientes.getRoot(), 1);
     }
 
 }

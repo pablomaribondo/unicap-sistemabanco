@@ -43,8 +43,11 @@ public class Fachada {
 
     public Cliente removerCliente(Cliente cliente) throws ClienteInexistenteException, ClienteContaCadastradaException {
         ArrayList<ContaAbstrata> elements = new ArrayList<>();
-        ArrayList<ContaAbstrata> accounts = new ArrayList<>();
         elements = inorderIterate(elements);
+        if (elements == null) {
+            return clientes.remove(cliente);
+        }
+        ArrayList<ContaAbstrata> accounts = new ArrayList<>();
         for (ContaAbstrata element : elements) {
             if (cliente.getCpf().equals(element.getCliente().getCpf())) {
                 accounts.add(element);
@@ -60,6 +63,10 @@ public class Fachada {
 
     public Cliente removerClienteRaiz() throws ClienteInexistenteException {
         return clientes.removeRoot();
+    }
+    
+    public void exibirClientes() {
+        clientes.display();
     }
 
     public void atualizarCliente(Cliente cliente) throws ClienteInexistenteException {

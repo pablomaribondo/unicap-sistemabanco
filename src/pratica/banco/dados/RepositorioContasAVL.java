@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import pratica.banco.exceptions.ContaExistenteException;
 import pratica.banco.exceptions.ContaInexistenteException;
 import pratica.banco.negocio.ContaAbstrata;
+import pratica.banco.negocio.ContaSimples;
 import pratica.banco.negocio.IRepositorioContas;
 
 public class RepositorioContasAVL implements IRepositorioContas {
@@ -64,8 +65,8 @@ public class RepositorioContasAVL implements IRepositorioContas {
     }
 
     public ContaAbstrata exists(String numero) {
-        ContaAbstrata conta = (ContaAbstrata) contas.search(numero, contas.getRoot()).getInfo();
-        return conta != null ? conta : null;
+        AvlNode conta = contas.search((ContaAbstrata)(new ContaSimples(numero, 0, null, null)), contas.getRoot());
+        return conta != null ? (ContaAbstrata) conta.getInfo() : null;
     }
 
 }

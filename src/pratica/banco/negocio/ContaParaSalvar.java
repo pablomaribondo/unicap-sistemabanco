@@ -1,6 +1,8 @@
 package pratica.banco.negocio;
 
-public class ContaParaSalvar {
+import java.io.Serializable;
+
+public class ContaParaSalvar implements Serializable {
 
     private String numero;
     private double saldo;

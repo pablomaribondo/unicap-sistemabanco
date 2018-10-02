@@ -1,6 +1,8 @@
 package pratica.banco.negocio;
 
-public class Cliente implements Comparable<Cliente> {
+import java.io.Serializable;
+
+public class Cliente implements Serializable, Comparable<Cliente> {
 
     private String cpf;
     private String nome;

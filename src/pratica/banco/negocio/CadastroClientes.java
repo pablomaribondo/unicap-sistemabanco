@@ -35,4 +35,8 @@ public class CadastroClientes {
     public Cliente removeRoot() throws ClienteInexistenteException {
         return clientes.removeRoot();
     }
+    
+    public void display() {
+        clientes.display();
+    }
 }
