@@ -17,7 +17,7 @@ public class ContaSimples extends ContaAbstrata {
         if (valor <= saldo) {
             setSaldo(saldo - valor);
         } else {
-            throw new SaldoInsuficienteException(getNumero(), getSaldo());
+            throw new SaldoInsuficienteException();
         }
     }
 

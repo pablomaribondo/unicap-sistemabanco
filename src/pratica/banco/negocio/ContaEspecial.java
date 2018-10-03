@@ -17,7 +17,7 @@ public class ContaEspecial extends ContaAbstrata {
         if (valor <= (saldo + 2000)) {
             setSaldo(saldo - valor);
         } else {
-            throw new SaldoInsuficienteException(getNumero(), getSaldo());
+            throw new SaldoInsuficienteException();
         }
     }
 

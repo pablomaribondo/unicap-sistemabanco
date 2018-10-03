@@ -21,7 +21,7 @@ public class RepositorioContasAVL implements IRepositorioContas {
         if (exists(conta.getNumero()) == null) {
             contas.insert(conta);
         } else {
-            throw new ContaExistenteException(conta.getNumero());
+            throw new ContaExistenteException();
         }
     }
 
@@ -32,7 +32,7 @@ public class RepositorioContasAVL implements IRepositorioContas {
             if (conta != null) {
                 return (ContaAbstrata) conta.getInfo();
             } else {
-                throw new ContaInexistenteException(numero);
+                throw new ContaInexistenteException();
             }
         } else {
             throw new ArvoreVaziaException();
@@ -47,7 +47,7 @@ public class RepositorioContasAVL implements IRepositorioContas {
                 contaCadastrada = contas.update(contaCadastrada, conta);
                 return (ContaAbstrata) contaCadastrada.getInfo();
             } else {
-                throw new ContaInexistenteException(conta.getNumero());
+                throw new ContaInexistenteException();
             }
         } else {
             throw new ArvoreVaziaException();
@@ -61,7 +61,7 @@ public class RepositorioContasAVL implements IRepositorioContas {
                 contas.remove(conta);
                 return conta;
             } else {
-                throw new ContaInexistenteException(conta.getNumero());
+                throw new ContaInexistenteException();
             }
         } else {
             throw new ArvoreVaziaException();

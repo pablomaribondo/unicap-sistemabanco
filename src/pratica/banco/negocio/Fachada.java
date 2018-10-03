@@ -57,7 +57,7 @@ public class Fachada {
         } else {
             for (ContaAbstrata account : accounts) {
                 if (cliente.getCpf().equals(account.getCliente().getCpf())) {
-                    throw new ClienteContaCadastradaException(cliente.getCpf());
+                    throw new ClienteContaCadastradaException();
                 }
             }
         }

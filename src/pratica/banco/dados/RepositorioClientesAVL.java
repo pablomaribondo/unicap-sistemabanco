@@ -20,7 +20,7 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
         if (exists(cliente.getCpf()) == null) {
             clientes.insert(cliente);
         } else {
-            throw new ClienteExistenteException(cliente.getCpf());
+            throw new ClienteExistenteException();
         }
     }
 
@@ -31,7 +31,7 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
             if (cliente != null) {
                 return (Cliente) cliente.getInfo();
             } else {
-                throw new ClienteInexistenteException(cpf);
+                throw new ClienteInexistenteException();
             }
         } else {
             throw new ArvoreVaziaException();
@@ -46,7 +46,7 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
                 clienteCadastrado = clientes.update(clienteCadastrado, cliente);
                 return (Cliente) clienteCadastrado.getInfo();
             } else {
-                throw new ClienteInexistenteException(cliente.getCpf());
+                throw new ClienteInexistenteException();
             }
         } else {
             throw new ArvoreVaziaException();
@@ -60,7 +60,7 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
                 clientes.remove(cliente);
                 return cliente;
             } else {
-                throw new ClienteInexistenteException(cliente.getCpf());
+                throw new ClienteInexistenteException();
             }
         } else {
             throw new ArvoreVaziaException();
