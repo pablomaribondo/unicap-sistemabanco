@@ -17,7 +17,7 @@ public class Cliente implements Serializable, Comparable<Cliente> {
     }
 
     public Cliente(String cpf) {
-        this.cpf = cpf;
+        this(cpf, null, null, null);
     }
 
     public String getCpf() {

@@ -79,12 +79,6 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
     }
 
     @Override
-    public AvlNode exists(String cpf) {
-        AvlNode cliente = clientes.search(clientes.getRoot(), new Cliente(cpf));
-        return cliente != null ? cliente : null;
-    }
-
-    @Override
     public ArrayList<Cliente> inorderIterate() throws ArvoreVaziaException {
         ArrayList<Cliente> list = new ArrayList<>();
         clientes.inorderIterate(clientes.getRoot(), list);
@@ -94,6 +88,11 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
             throw new ArvoreVaziaException();
         }
 
+    }
+
+    private AvlNode exists(String cpf) {
+        AvlNode cliente = clientes.search(clientes.getRoot(), new Cliente(cpf));
+        return cliente != null ? cliente : null;
     }
 
 }

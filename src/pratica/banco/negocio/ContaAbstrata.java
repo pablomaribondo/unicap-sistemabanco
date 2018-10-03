@@ -9,15 +9,15 @@ public abstract class ContaAbstrata implements Comparable<ContaAbstrata> {
     private Cliente cliente;
     private TipoConta tipo;
 
-    public ContaAbstrata(String numero, Cliente cliente) {
-        this(numero, 0, cliente, null);
+    public ContaAbstrata(String numero, double saldo, Cliente cliente, TipoConta tipo) {
+        this.numero = numero;
+        this.saldo = saldo;
+        this.cliente = cliente;
+        this.tipo = tipo;
     }
 
-    public ContaAbstrata(String numero, double saldo, Cliente cliente, TipoConta tipo) {
-        setNumero(numero);
-        setSaldo(saldo);
-        setCliente(cliente);
-        setTipo(tipo);
+    public ContaAbstrata(String numero, Cliente cliente) {
+        this(numero, 0, cliente, null);
     }
 
     public String getNumero() {
@@ -44,16 +44,16 @@ public abstract class ContaAbstrata implements Comparable<ContaAbstrata> {
         this.cliente = cliente;
     }
 
-    public void creditar(double valor) {
-        this.saldo += valor;
-    }
-
     public TipoConta getTipo() {
         return tipo;
     }
 
     public void setTipo(TipoConta tipo) {
         this.tipo = tipo;
+    }
+
+    public void creditar(double valor) {
+        this.saldo += valor;
     }
 
     public abstract void debitar(double valor) throws SaldoInsuficienteException;
@@ -63,10 +63,6 @@ public abstract class ContaAbstrata implements Comparable<ContaAbstrata> {
         conta.creditar(valor);
     }
 
-    public boolean equals(ContaAbstrata conta) {
-        return this.numero.equals(conta.getNumero());
-    }
-
     @Override
     public int compareTo(ContaAbstrata conta) {
         return numero.compareTo(conta.getNumero());
@@ -74,7 +70,7 @@ public abstract class ContaAbstrata implements Comparable<ContaAbstrata> {
 
     @Override
     public String toString() {
-        return "Número: " + numero + ", tipo:" + tipo + ", saldo: " + saldo + ", cliente: " + cliente;
+        return "Número: " + numero + ", Tipo:" + tipo + ", Saldo: " + saldo + ", Cliente: [" + cliente + "]";
     }
 
 }

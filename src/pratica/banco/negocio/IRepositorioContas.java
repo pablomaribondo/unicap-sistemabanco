@@ -1,6 +1,7 @@
 package pratica.banco.negocio;
 
 import java.util.ArrayList;
+import pratica.banco.exceptions.ArvoreVaziaException;
 import pratica.banco.exceptions.ContaExistenteException;
 import pratica.banco.exceptions.ContaInexistenteException;
 
@@ -8,16 +9,14 @@ public interface IRepositorioContas {
 
     void insert(ContaAbstrata conta) throws ContaExistenteException;
 
-    ContaAbstrata search(String numero) throws ContaInexistenteException;
+    ContaAbstrata search(String numero) throws ContaInexistenteException, ArvoreVaziaException;
 
-    void update(ContaAbstrata conta) throws ContaInexistenteException;
+    ContaAbstrata update(ContaAbstrata conta) throws ContaInexistenteException, ArvoreVaziaException;
 
-    ContaAbstrata remove(ContaAbstrata conta) throws ContaInexistenteException;
+    ContaAbstrata remove(ContaAbstrata conta) throws ContaInexistenteException, ArvoreVaziaException;
 
-    ContaAbstrata removeRoot() throws ContaInexistenteException;
+    ContaAbstrata removeRoot() throws ContaInexistenteException, ArvoreVaziaException;
 
-    public ArrayList<ContaAbstrata> inorderIterate(ArrayList<ContaAbstrata> list);
-
-    ContaAbstrata exists(String numero);
+    ArrayList<ContaAbstrata> inorderIterate() throws ArvoreVaziaException;
 
 }
