@@ -1,5 +1,6 @@
 package pratica.banco.negocio;
 
+import java.util.ArrayList;
 import pratica.banco.exceptions.ArvoreVaziaException;
 import pratica.banco.exceptions.ClienteExistenteException;
 import pratica.banco.exceptions.ClienteInexistenteException;
@@ -13,31 +14,26 @@ public class CadastroClientes {
     }
 
     public void insert(Cliente cliente) throws ClienteExistenteException {
-        String cpf = cliente.getCpf();
-        if (clientes.exists(cpf) == null) {
-            clientes.insert(cliente);
-        } else {
-            throw new ClienteExistenteException(cpf);
-        }
+        clientes.insert(cliente);
     }
 
-    public Cliente search(String cpf) throws ClienteInexistenteException {
+    public Cliente search(String cpf) throws ClienteInexistenteException, ArvoreVaziaException {
         return clientes.search(cpf);
     }
 
-    public void update(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
-        clientes.update(cliente);
+    public Cliente update(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
+        return clientes.update(cliente);
     }
 
     public Cliente remove(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
         return clientes.remove(cliente);
     }
-    
+
     public Cliente removeRoot() throws ClienteInexistenteException, ArvoreVaziaException {
         return clientes.removeRoot();
     }
-    
-    public void display() {
-        clientes.display();
+
+    public ArrayList<Cliente> inorderIterate() throws ArvoreVaziaException {
+        return clientes.inorderIterate();
     }
 }

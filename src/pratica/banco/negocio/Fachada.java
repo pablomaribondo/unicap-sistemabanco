@@ -66,19 +66,22 @@ public class Fachada {
         return clientes.removeRoot();
     }
     
-    public void exibirClientes() {
-        clientes.display();
+    public void exibirClientes() throws ArvoreVaziaException {
+        ArrayList<Cliente> listaClientes = clientes.inorderIterate();
+        for (Cliente cliente : listaClientes) {
+            System.out.println(cliente);
+        }
     }
 
-    public void atualizarCliente(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
-        clientes.update(cliente);
+    public Cliente atualizarCliente(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
+        return clientes.update(cliente);
     }
 
-    public Cliente procurarCliente(String cpf) throws ClienteInexistenteException {
+    public Cliente procurarCliente(String cpf) throws ClienteInexistenteException, ArvoreVaziaException {
         return clientes.search(cpf);
     }
 
-    public void cadastrarConta(ContaAbstrata conta) throws ContaExistenteException, ClienteInexistenteException, ClienteInvalidoException {
+    public void cadastrarConta(ContaAbstrata conta) throws ContaExistenteException, ClienteInexistenteException, ClienteInvalidoException, ArvoreVaziaException {
         Cliente cliente = conta.getCliente();
         if (cliente != null) {
             clientes.search(cliente.getCpf());

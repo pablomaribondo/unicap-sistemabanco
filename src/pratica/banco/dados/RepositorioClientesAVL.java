@@ -1,5 +1,6 @@
 package pratica.banco.dados;
 
+import java.util.ArrayList;
 import pratica.banco.exceptions.ArvoreVaziaException;
 import pratica.banco.exceptions.ClienteExistenteException;
 import pratica.banco.exceptions.ClienteInexistenteException;
@@ -14,6 +15,7 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
         clientes = new AVLTree<>();
     }
 
+    @Override
     public void insert(Cliente cliente) throws ClienteExistenteException {
         if (exists(cliente.getCpf()) == null) {
             clientes.insert(cliente);
@@ -22,20 +24,27 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
         }
     }
 
-    public Cliente search(String cpf) throws ClienteInexistenteException {
-        AvlNode cliente = exists(cpf);
-        if (cliente != null) {
-            return (Cliente) cliente.getInfo();
+    @Override
+    public Cliente search(String cpf) throws ClienteInexistenteException, ArvoreVaziaException {
+        if (!clientes.isEmpty()) {
+            AvlNode cliente = exists(cpf);
+            if (cliente != null) {
+                return (Cliente) cliente.getInfo();
+            } else {
+                throw new ClienteInexistenteException(cpf);
+            }
         } else {
-            throw new ClienteInexistenteException(cpf);
+            throw new ArvoreVaziaException();
         }
     }
 
-    public void update(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
+    @Override
+    public Cliente update(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
         if (!clientes.isEmpty()) {
             AvlNode clienteCadastrado = exists(cliente.getCpf());
             if (clienteCadastrado != null) {
-                clientes.update(clienteCadastrado, cliente);
+                clienteCadastrado = clientes.update(clienteCadastrado, cliente);
+                return (Cliente) clienteCadastrado.getInfo();
             } else {
                 throw new ClienteInexistenteException(cliente.getCpf());
             }
@@ -44,6 +53,7 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
         }
     }
 
+    @Override
     public Cliente remove(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
         if (!clientes.isEmpty()) {
             if (exists(cliente.getCpf()) != null) {
@@ -57,23 +67,33 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
         }
     }
 
+    @Override
     public Cliente removeRoot() throws ClienteInexistenteException, ArvoreVaziaException {
         if (!clientes.isEmpty()) {
-            Cliente root = clientes.getRoot().getInfo();
-            clientes.remove(root);
-            return root;
+            Cliente cliente = clientes.getRoot().getInfo();
+            clientes.remove(cliente);
+            return cliente;
         } else {
             throw new ArvoreVaziaException();
         }
     }
 
+    @Override
     public AvlNode exists(String cpf) {
         AvlNode cliente = clientes.search(clientes.getRoot(), new Cliente(cpf));
         return cliente != null ? cliente : null;
     }
 
-    public void display() {
-        clientes.display(clientes.getRoot(), 1);
+    @Override
+    public ArrayList<Cliente> inorderIterate() throws ArvoreVaziaException {
+        ArrayList<Cliente> list = new ArrayList<>();
+        clientes.inorderIterate(clientes.getRoot(), list);
+        if (list != null) {
+            return list;
+        } else {
+            throw new ArvoreVaziaException();
+        }
+
     }
 
 }

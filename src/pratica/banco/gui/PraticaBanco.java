@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import pratica.banco.dados.CadastroEmArquivo;
 import pratica.banco.dados.RepositorioClientesAVL;
 import pratica.banco.exceptions.ArvoreVaziaException;
@@ -61,7 +59,7 @@ public class PraticaBanco {
         Cliente cliente;
         do {
             try {
-                System.out.println("------------------------\n\tMENU CLIENTES\n------------------------\n");
+                System.out.println("----------------------------\n\tMENU CLIENTES\n----------------------------\n");
                 System.out.println("1. CADASTRAR NOVO CLIENTE\n2. PROCURAR CLIENTE\n"
                         + "3. ATUALIZAR CLIENTE\n4. REMOVER CLIENTE\n"
                         + "5. EXIBIR TODAS AS CONTAS DO CLIENTE\n9. VOLTAR PARA MENU PRINCIPAL"
@@ -78,6 +76,8 @@ public class PraticaBanco {
                             cliente = fachada.procurarCliente(cpf);
                         } catch (ClienteInexistenteException ex) {
                             System.err.println(ex.getMessage());
+                        } catch (ArvoreVaziaException ex) {
+                            
                         }
                         System.out.print("DIGITE O NOME DO CLIENTE: ");
                         nome = read.readLine();
@@ -97,8 +97,8 @@ public class PraticaBanco {
                         cpf = read.readLine();
                         try {
                             cliente = fachada.procurarCliente(cpf);
-                            System.out.println(cliente);
-                        } catch (ClienteInexistenteException ex) {
+                            System.out.println("\n" + cliente + "\n");
+                        } catch (ClienteInexistenteException | ArvoreVaziaException ex) {
                             System.err.println(ex.getMessage());
                         }
                         break;
@@ -107,8 +107,8 @@ public class PraticaBanco {
                         cpf = read.readLine();
                         try {
                             cliente = fachada.procurarCliente(cpf);
-                            System.out.println(cliente);
-                        } catch (ClienteInexistenteException ex) {
+                            System.out.println("\n" + cliente);
+                        } catch (ClienteInexistenteException | ArvoreVaziaException ex) {
                             System.err.println(ex.getMessage());
                         }
                         System.out.print("\nALTERE O NOME DO CLIENTE: ");
@@ -118,7 +118,8 @@ public class PraticaBanco {
                         System.out.print("ALTERE O TELEFONE DO CLIENTE: ");
                         telefone = read.readLine();
                         try {
-                            fachada.atualizarCliente(new Cliente(cpf, nome, email, telefone));
+                            cliente = fachada.atualizarCliente(new Cliente(cpf, nome, email, telefone));
+                            System.out.println("\n" + cliente);
                             System.out.println("\nCLIENTE ATUALIZADO!\n");
                         } catch (ClienteInexistenteException | ArvoreVaziaException ex) {
                             System.err.println(ex.getMessage());
@@ -141,7 +142,7 @@ public class PraticaBanco {
                         try {
                             cliente = fachada.procurarCliente(cpf);
                             System.out.println(cliente);
-                        } catch (ClienteInexistenteException ex) {
+                        } catch (ClienteInexistenteException | ArvoreVaziaException ex) {
                             System.err.println(ex.getMessage());
                         }
                         ArrayList<ContaAbstrata> elements = new ArrayList<>();
@@ -203,7 +204,7 @@ public class PraticaBanco {
                             conta = tipoconta == 1 ? TipoConta.SIMPLES.instanciar(numero, 0, cliente) : TipoConta.ESPECIAL.instanciar(numero, 0, cliente);
                             fachada.cadastrarConta(conta);
                             System.out.println("\nCONTA CADASTRADA!\n");
-                        } catch (ClienteInexistenteException | ContaExistenteException | ClienteInvalidoException ex) {
+                        } catch (ClienteInexistenteException | ContaExistenteException | ClienteInvalidoException | ArvoreVaziaException ex) {
                             System.err.println(ex.getMessage());
                         }
                         break;
@@ -410,35 +411,8 @@ public class PraticaBanco {
 //                System.err.println(ex.getMessage());
 //            }
 //        }
-try {
-    
-    for (int i = 0; i < 24; i++) {
-        if (i < 9) {
-            fachada.cadastrarCliente(new Cliente("00" + (i + 1), "nome", "email", "fone"));
-        } else {
-            fachada.cadastrarCliente(new Cliente("0" + (i + 1), "nome", "email", "fone"));
-        }
-    }
-    
-    for (int i = 0; i < 6; i++) {
-        if (i < 9) {
-            fachada.removerCliente(new Cliente("00" + (i + 1), "nome", "email", "fone"));
-        } else {
-            fachada.removerCliente(new Cliente("0" + i, "nome", "email", "fone"));
-        }
-    }
-    
-//    fachada.removerCliente(new Cliente("024", "nome", "email", "fone"));
-//    fachada.removerCliente(new Cliente("007", "nome", "email", "fone"));
-//    fachada.removerCliente(new Cliente("006", "nome", "email", "fone"));
-    fachada.exibirClientes();
-//    fachada.atualizarCliente(new Cliente("007", "lindeza", "email", "fone"));
-//    System.out.println("\n________________________________________________________________");
-//    fachada.exibirClientes();
-} catch (ClienteExistenteException | ClienteInexistenteException | ClienteContaCadastradaException | ArvoreVaziaException ex) {
-    System.err.println(ex.getMessage());
-}
-//        menuPrincipal();
+
+        menuPrincipal();
 
 //        cadastroEmArquivoContas.openToWrite(nomeArquivoContas);
 //        try {

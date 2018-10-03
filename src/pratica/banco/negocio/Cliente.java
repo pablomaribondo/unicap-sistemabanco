@@ -59,7 +59,7 @@ public class Cliente implements Serializable, Comparable<Cliente> {
 
     @Override
     public String toString() {
-        return "CPF:" + cpf + ", nome:" + nome + ", email:" + email + ", telefone:" + telefone;
+        return "CPF:" + cpf + ", Nome:" + nome + ", Email:" + email + ", Telefone:" + telefone;
     }
 
 }
