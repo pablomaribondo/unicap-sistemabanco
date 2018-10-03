@@ -3,6 +3,7 @@ package pratica.banco.negocio;
 import java.util.ArrayList;
 import pratica.banco.dados.RepositorioClientesAVL;
 import pratica.banco.dados.RepositorioContasAVL;
+import pratica.banco.exceptions.ArvoreVaziaException;
 import pratica.banco.exceptions.ClienteContaCadastradaException;
 import pratica.banco.exceptions.ClienteExistenteException;
 import pratica.banco.exceptions.ClienteInexistenteException;
@@ -41,7 +42,7 @@ public class Fachada {
         clientes.insert(cliente);
     }
 
-    public Cliente removerCliente(Cliente cliente) throws ClienteInexistenteException, ClienteContaCadastradaException {
+    public Cliente removerCliente(Cliente cliente) throws ClienteInexistenteException, ClienteContaCadastradaException, ArvoreVaziaException {
         ArrayList<ContaAbstrata> elements = new ArrayList<>();
         elements = inorderIterate(elements);
         if (elements == null) {
@@ -61,7 +62,7 @@ public class Fachada {
 
     }
 
-    public Cliente removerClienteRaiz() throws ClienteInexistenteException {
+    public Cliente removerClienteRaiz() throws ClienteInexistenteException, ArvoreVaziaException {
         return clientes.removeRoot();
     }
     
@@ -69,7 +70,7 @@ public class Fachada {
         clientes.display();
     }
 
-    public void atualizarCliente(Cliente cliente) throws ClienteInexistenteException {
+    public void atualizarCliente(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException {
         clientes.update(cliente);
     }
 

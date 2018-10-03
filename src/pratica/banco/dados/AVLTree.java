@@ -10,38 +10,36 @@ public class AVLTree<Object extends Comparable<? super Object>> {
         root = null;
     }
 
-    public AvlNode insert(Object key) {
-        return root = isEmpty() ? new AvlNode<Object>(key) : insert(this.root, key);
+    public AvlNode insert(Object object) {
+        return root = isEmpty() ? new AvlNode<Object>(object) : insert(this.root, object);
     }
 
-    private AvlNode insert(AvlNode node, Object key) {
+    private AvlNode insert(AvlNode node, Object object) {
         if (node == null) {
-            node = new AvlNode<>(key);
+            node = new AvlNode<>(object);
             return node;
-        } else if (node.getInfo().compareTo(key) > 0) {
-            node.setLeft(insert(node.getLeft(), key));
+        } else if (node.getInfo().compareTo(object) > 0) {
+            node.setLeft(insert(node.getLeft(), object));
             node = balance(node);
-        } else if (node.getInfo().compareTo(key) <= 0) {
-            node.setRight(insert(node.getRight(), key));
+        } else if (node.getInfo().compareTo(object) < 0) {
+            node.setRight(insert(node.getRight(), object));
             node = balance(node);
         }
         return node;
     }
 
-    public AvlNode remove(Object key) {
-        return remove(root, key);
+    public AvlNode remove(Object object) {
+        return isEmpty() ? null : remove(this.root, object);
     }
 
-    private AvlNode remove(AvlNode node, Comparable key) {
+    private AvlNode remove(AvlNode node, Object object) {
         if (node == null) {
             return null;
-        }
-
-        if (key.compareTo(node.getInfo()) < 0) {
-            node.setLeft(remove(node.getLeft(), key));
+        } else if (node.getInfo().compareTo(object) > 0) {
+            node.setLeft(remove(node.getLeft(), object));
             return balance(node);
-        } else if (key.compareTo(node.getInfo()) > 0) {
-            node.setRight(remove(node.getRight(), key));
+        } else if (node.getInfo().compareTo(object) < 0) {
+            node.setRight(remove(node.getRight(), object));
             return balance(node);
         } else {
             if (node.getLeft() == null && node.getRight() == null) {
@@ -63,17 +61,21 @@ public class AVLTree<Object extends Comparable<? super Object>> {
             leftBiggest = leftBiggest.getRight();
         }
         node.setInfo(leftBiggest.getInfo());
-        node.setLeft(remove(node.getLeft(), leftBiggest.getInfo()));
-        node = balance(node);
-        return node;
+        node.setLeft(remove(node.getLeft(), (Object) leftBiggest.getInfo()));
+        return balance(node);
 
     }
 
-    public AvlNode search(Comparable comparable, AvlNode node) {
+    public AvlNode update(AvlNode node, Object object) {
+        node.setInfo(object);
+        return node;
+    }
+
+    public AvlNode search(AvlNode node, Object object) {
         while (node != null) {
-            if (comparable.compareTo(node.getInfo()) < 0) {
+            if (node.getInfo().compareTo(object) > 0) {
                 node = node.getLeft();
-            } else if (comparable.compareTo(node.getInfo()) > 0) {
+            } else if (node.getInfo().compareTo(object) < 0) {
                 node = node.getRight();
             } else {
                 return node;
@@ -159,19 +161,19 @@ public class AVLTree<Object extends Comparable<? super Object>> {
         return singleLeftRotation(a);
     }
 
-    public void display(AvlNode ptr, int level) {
+    public void display(AvlNode node, int level) {
         int i;
-        if (ptr != null) {
-            display(ptr.getRight(), level + 1);
+        if (node != null) {
+            display(node.getRight(), level + 1);
             System.out.println();
-            if (ptr == root) {
+            if (node == root) {
                 System.out.print("Root:");
             }
-            for (i = 0; i < level && ptr != root; i++) {
+            for (i = 0; i < level && node != root; i++) {
                 System.out.print("\t");
             }
-            System.out.print(ptr.getBalance() + ":" + ptr.getInfo());
-            display(ptr.getLeft(), level + 1);
+            System.out.print("FatBal(" + node.getBalance() + "):" + node.getInfo());
+            display(node.getLeft(), level + 1);
         }
     }
 

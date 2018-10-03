@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import pratica.banco.dados.CadastroEmArquivo;
 import pratica.banco.dados.RepositorioClientesAVL;
+import pratica.banco.exceptions.ArvoreVaziaException;
 import pratica.banco.exceptions.ClienteContaCadastradaException;
 import pratica.banco.exceptions.ClienteExistenteException;
 import pratica.banco.exceptions.ClienteInexistenteException;
@@ -119,7 +120,7 @@ public class PraticaBanco {
                         try {
                             fachada.atualizarCliente(new Cliente(cpf, nome, email, telefone));
                             System.out.println("\nCLIENTE ATUALIZADO!\n");
-                        } catch (ClienteInexistenteException ex) {
+                        } catch (ClienteInexistenteException | ArvoreVaziaException ex) {
                             System.err.println(ex.getMessage());
                         }
                         break;
@@ -130,7 +131,7 @@ public class PraticaBanco {
                             cliente = fachada.procurarCliente(cpf);
                             fachada.removerCliente(cliente);
                             System.out.println("\nCLIENTE REMOVIDO!\n");
-                        } catch (ClienteInexistenteException | ClienteContaCadastradaException ex) {
+                        } catch (ClienteInexistenteException | ClienteContaCadastradaException | ArvoreVaziaException ex) {
                             System.err.println(ex.getMessage());
                         }
                         break;
@@ -431,8 +432,10 @@ try {
 //    fachada.removerCliente(new Cliente("007", "nome", "email", "fone"));
 //    fachada.removerCliente(new Cliente("006", "nome", "email", "fone"));
     fachada.exibirClientes();
-    
-} catch (ClienteExistenteException | ClienteInexistenteException | ClienteContaCadastradaException ex) {
+//    fachada.atualizarCliente(new Cliente("007", "lindeza", "email", "fone"));
+//    System.out.println("\n________________________________________________________________");
+//    fachada.exibirClientes();
+} catch (ClienteExistenteException | ClienteInexistenteException | ClienteContaCadastradaException | ArvoreVaziaException ex) {
     System.err.println(ex.getMessage());
 }
 //        menuPrincipal();

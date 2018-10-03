@@ -65,7 +65,7 @@ public class RepositorioContasAVL implements IRepositorioContas {
     }
 
     public ContaAbstrata exists(String numero) {
-        AvlNode conta = contas.search((ContaAbstrata)(new ContaSimples(numero, 0, null, null)), contas.getRoot());
+        AvlNode conta = contas.search(contas.getRoot(), (ContaAbstrata)(new ContaSimples(numero, 0, null, null)));
         return conta != null ? (ContaAbstrata) conta.getInfo() : null;
     }
 
