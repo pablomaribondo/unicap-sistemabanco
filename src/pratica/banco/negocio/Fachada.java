@@ -75,6 +75,27 @@ public class Fachada {
         });
     }
 
+    public boolean validarCPF(String cpf) {
+        if ((cpf == null) || (cpf.length() != 11)) {
+            return false;
+        }
+        int[] pesoCPF = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
+        Integer digito1 = validarCPF(cpf.substring(0, 9), pesoCPF);
+        Integer digito2 = validarCPF(cpf.substring(0, 9) + digito1, pesoCPF);
+
+        return cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString());
+    }
+
+    private int validarCPF(String cpf, int[] peso) {
+        int soma = 0, digito;
+        for (int i = cpf.length() - 1; i >= 0; i--) {
+            digito = Integer.parseInt(cpf.substring(i, i + 1));
+            soma += digito * peso[peso.length - cpf.length() + i];
+        }
+        soma = 11 - soma % 11;
+        return soma > 9 ? 0 : soma;
+    }
+
     public void cadastrarConta(ContaAbstrata conta) throws ContaExistenteException, ClienteInexistenteException, ClienteInvalidoException, ArvoreVaziaException {
         Cliente cliente = conta.getCliente();
         if (cliente != null) {

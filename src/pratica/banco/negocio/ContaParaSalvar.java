@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class ContaParaSalvar implements Serializable {
 
-    private final String numero;
-    private final double saldo;
-    private final String cpfCliente;
-    private final String tipo;
+    private String numero;
+    private double saldo;
+    private String cpfCliente;
+    private String tipo;
 
     public ContaParaSalvar(String numero, double saldo, String cpfCliente, String tipo) {
         this.numero = numero;

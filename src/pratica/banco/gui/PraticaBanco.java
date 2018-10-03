@@ -12,6 +12,7 @@ import pratica.banco.exceptions.ClienteInexistenteException;
 import pratica.banco.exceptions.ClienteInvalidoException;
 import pratica.banco.exceptions.ContaExistenteException;
 import pratica.banco.exceptions.ContaInexistenteException;
+import pratica.banco.exceptions.CpfInvalidoException;
 import pratica.banco.exceptions.SaldoInsuficienteException;
 import pratica.banco.negocio.Cliente;
 import pratica.banco.negocio.ContaAbstrata;
@@ -70,6 +71,9 @@ public class PraticaBanco {
                     case 1:
                         System.out.print("\nDIGITE O CPF DO CLIENTE: ");
                         cpf = read.readLine();
+                        if (!fachada.validarCPF(cpf)) {
+                            throw new CpfInvalidoException();
+                        }
                         try {
                             fachada.procurarCliente(cpf);
                         } catch (ClienteInexistenteException ex) {
@@ -93,6 +97,9 @@ public class PraticaBanco {
                     case 2:
                         System.out.print("\nDIGITE O CPF DO CLIENTE: ");
                         cpf = read.readLine();
+                        if (!fachada.validarCPF(cpf)) {
+                            throw new CpfInvalidoException();
+                        }
                         try {
                             cliente = fachada.procurarCliente(cpf);
                             System.out.println("\n" + cliente + "\n");
@@ -103,6 +110,9 @@ public class PraticaBanco {
                     case 3:
                         System.out.print("\nDIGITE O CPF DO CLIENTE: ");
                         cpf = read.readLine();
+                        if (!fachada.validarCPF(cpf)) {
+                            throw new CpfInvalidoException();
+                        }
                         try {
                             cliente = fachada.procurarCliente(cpf);
                             System.out.println("\n" + cliente);
@@ -126,6 +136,9 @@ public class PraticaBanco {
                     case 4:
                         System.out.print("\nDIGITE O CPF DO CLIENTE: ");
                         cpf = read.readLine();
+                        if (!fachada.validarCPF(cpf)) {
+                            throw new CpfInvalidoException();
+                        }
                         try {
                             cliente = fachada.procurarCliente(cpf);
                             fachada.removerCliente(cliente);
@@ -137,6 +150,9 @@ public class PraticaBanco {
                     case 5:
                         System.out.print("\nDIGITE O CPF DO CLIENTE: ");
                         cpf = read.readLine();
+                        if (!fachada.validarCPF(cpf)) {
+                            throw new CpfInvalidoException();
+                        }
                         try {
                             cliente = fachada.procurarCliente(cpf);
                             System.out.println("\n" + cliente + "\n");
@@ -155,7 +171,7 @@ public class PraticaBanco {
                     default:
                         System.out.println("OPCAO INVALIDA, TENTE NOVAMENTE!");
                 }
-            } catch (IOException ex) {
+            } catch (IOException | CpfInvalidoException ex) {
                 System.err.println(ex.getMessage());
             }
         } while (option != 0);
@@ -192,6 +208,9 @@ public class PraticaBanco {
                         }
                         System.out.print("DIGITE O CPF DO CLIENTE: ");
                         cpf = read.readLine();
+                        if (!fachada.validarCPF(cpf)) {
+                            throw new CpfInvalidoException();
+                        }
                         try {
                             cliente = fachada.procurarCliente(cpf);
                             System.out.println("\nDIGITE O TIPO DE CONTA:\n1.CONTA SIMPLES\n2.CONTA ESPECIAL\n");
@@ -277,7 +296,7 @@ public class PraticaBanco {
                     default:
                         System.out.println("OPCAO INVALIDA, TENTE NOVAMENTE!");
                 }
-            } catch (IOException ex) {
+            } catch (IOException | CpfInvalidoException ex) {
                 System.err.println(ex.getMessage());
             }
         } while (option != 0);
