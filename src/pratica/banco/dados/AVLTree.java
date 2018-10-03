@@ -11,7 +11,7 @@ public class AVLTree<Object extends Comparable<? super Object>> {
     }
 
     public AvlNode insert(Object object) {
-        return root = isEmpty() ? new AvlNode<Object>(object) : insert(this.root, object);
+        return root = isEmpty() ? new AvlNode<>(object) : insert(this.root, object);
     }
 
     private AvlNode insert(AvlNode node, Object object) {
@@ -49,9 +49,15 @@ public class AVLTree<Object extends Comparable<? super Object>> {
                 return null;
             }
             if (node.getLeft() == null) {
+                if (node.equals(root)) {
+                    return root = node.getRight();
+                }
                 return node.getRight();
             }
             if (node.getRight() == null) {
+                if (node.equals(root)) {
+                    return root = node.getLeft();
+                }
                 return node.getLeft();
             }
         }

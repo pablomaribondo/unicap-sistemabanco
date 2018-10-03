@@ -15,7 +15,7 @@ public interface IRepositorioClientes {
 
     Cliente remove(Cliente cliente) throws ClienteInexistenteException, ArvoreVaziaException;
 
-    Cliente removeRoot() throws ClienteInexistenteException, ArvoreVaziaException;
+    Cliente removeRoot() throws ClienteInexistenteException;
 
     ArrayList<Cliente> inorderIterate() throws ArvoreVaziaException;
 

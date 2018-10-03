@@ -12,6 +12,7 @@ public class ContaSimples extends ContaAbstrata {
         super(numero, saldo, cliente, tipo);
     }
 
+    @Override
     public void debitar(double valor) throws SaldoInsuficienteException {
         double saldo = getSaldo();
         if (valor <= saldo) {

@@ -9,7 +9,7 @@ import pratica.banco.negocio.IRepositorioClientes;
 
 public class RepositorioClientesAVL implements IRepositorioClientes {
 
-    private AVLTree<Cliente> clientes;
+    private final AVLTree<Cliente> clientes;
 
     public RepositorioClientesAVL() {
         clientes = new AVLTree<>();
@@ -68,13 +68,13 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
     }
 
     @Override
-    public Cliente removeRoot() throws ClienteInexistenteException, ArvoreVaziaException {
+    public Cliente removeRoot() throws ClienteInexistenteException {
         if (!clientes.isEmpty()) {
             Cliente cliente = clientes.getRoot().getInfo();
             clientes.remove(cliente);
             return cliente;
         } else {
-            throw new ArvoreVaziaException();
+            return null;
         }
     }
 
@@ -82,7 +82,7 @@ public class RepositorioClientesAVL implements IRepositorioClientes {
     public ArrayList<Cliente> inorderIterate() throws ArvoreVaziaException {
         ArrayList<Cliente> list = new ArrayList<>();
         clientes.inorderIterate(clientes.getRoot(), list);
-        if (list != null) {
+        if (!list.isEmpty()) {
             return list;
         } else {
             throw new ArvoreVaziaException();

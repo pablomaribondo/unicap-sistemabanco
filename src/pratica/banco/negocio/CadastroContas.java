@@ -8,7 +8,7 @@ import pratica.banco.exceptions.SaldoInsuficienteException;
 
 public class CadastroContas {
 
-    private IRepositorioContas contas;
+    private final IRepositorioContas contas;
 
     public CadastroContas(IRepositorioContas contas) {
         this.contas = contas;
@@ -30,7 +30,7 @@ public class CadastroContas {
         return contas.remove(conta);
     }
 
-    public ContaAbstrata removeRoot() throws ContaInexistenteException, ArvoreVaziaException {
+    public ContaAbstrata removeRoot() throws ContaInexistenteException {
         return contas.removeRoot();
     }
 

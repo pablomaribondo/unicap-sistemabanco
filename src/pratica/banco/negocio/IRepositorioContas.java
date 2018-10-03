@@ -15,7 +15,7 @@ public interface IRepositorioContas {
 
     ContaAbstrata remove(ContaAbstrata conta) throws ContaInexistenteException, ArvoreVaziaException;
 
-    ContaAbstrata removeRoot() throws ContaInexistenteException, ArvoreVaziaException;
+    ContaAbstrata removeRoot() throws ContaInexistenteException;
 
     ArrayList<ContaAbstrata> inorderIterate() throws ArvoreVaziaException;
 

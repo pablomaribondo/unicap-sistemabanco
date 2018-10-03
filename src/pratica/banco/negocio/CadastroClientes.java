@@ -7,7 +7,7 @@ import pratica.banco.exceptions.ClienteInexistenteException;
 
 public class CadastroClientes {
 
-    private IRepositorioClientes clientes;
+    private final IRepositorioClientes clientes;
 
     public CadastroClientes(IRepositorioClientes clientes) {
         this.clientes = clientes;
@@ -29,7 +29,7 @@ public class CadastroClientes {
         return clientes.remove(cliente);
     }
 
-    public Cliente removeRoot() throws ClienteInexistenteException, ArvoreVaziaException {
+    public Cliente removeRoot() throws ClienteInexistenteException {
         return clientes.removeRoot();
     }
 

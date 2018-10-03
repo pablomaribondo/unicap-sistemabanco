@@ -64,15 +64,15 @@ public class Fachada {
         return clientes.remove(cliente);
     }
 
-    public Cliente removerClienteRaiz() throws ClienteInexistenteException, ArvoreVaziaException {
+    public Cliente removerClienteRaiz() throws ClienteInexistenteException {
         return clientes.removeRoot();
     }
 
     public void exibirClientes() throws ArvoreVaziaException {
         ArrayList<Cliente> listaClientes = clientes.inorderIterate();
-        for (Cliente cliente : listaClientes) {
+        listaClientes.forEach((cliente) -> {
             System.out.println(cliente);
-        }
+        });
     }
 
     public void cadastrarConta(ContaAbstrata conta) throws ContaExistenteException, ClienteInexistenteException, ClienteInvalidoException, ArvoreVaziaException {
@@ -97,28 +97,26 @@ public class Fachada {
         contas.remove(conta);
     }
 
-    public ContaAbstrata removerContaRaiz() throws ContaInexistenteException, ArvoreVaziaException {
+    public ContaAbstrata removerContaRaiz() throws ContaInexistenteException {
         return contas.removeRoot();
     }
 
     public void exibirContas() throws ArvoreVaziaException {
         ArrayList<ContaAbstrata> listaContas = contas.inorderIterate();
-        for (ContaAbstrata conta : listaContas) {
+        listaContas.forEach((conta) -> {
             System.out.println(conta);
-        }
+        });
     }
-    
+
     public void exibirContasDoCliente(String cpf) throws ArvoreVaziaException {
         ArrayList<ContaAbstrata> listaContas = contas.inorderIterate();
         ArrayList<ContaAbstrata> contasDoCliente = new ArrayList<>();
-        for (ContaAbstrata conta : listaContas) {
-            if (cpf.equals(conta.getCliente().getCpf())) {
-                contasDoCliente.add(conta);
-            }
-        }
-        for (ContaAbstrata contaCliente : contasDoCliente) {
+        listaContas.stream().filter((conta) -> (cpf.equals(conta.getCliente().getCpf()))).forEachOrdered((conta) -> {
+            contasDoCliente.add(conta);
+        });
+        contasDoCliente.forEach((contaCliente) -> {
             System.out.println(contaCliente);
-        }
+        });
     }
 
     public void creditar(String numero, double valor) throws ContaInexistenteException, ArvoreVaziaException {
@@ -132,4 +130,5 @@ public class Fachada {
     public void transferir(String numeroOrigem, String numeroDestino, double valor) throws ContaInexistenteException, SaldoInsuficienteException, ArvoreVaziaException {
         contas.transferir(numeroOrigem, numeroDestino, valor);
     }
+
 }

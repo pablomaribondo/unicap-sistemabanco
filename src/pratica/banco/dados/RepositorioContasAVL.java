@@ -10,7 +10,7 @@ import pratica.banco.negocio.IRepositorioContas;
 
 public class RepositorioContasAVL implements IRepositorioContas {
 
-    private AVLTree<ContaAbstrata> contas;
+    private final AVLTree<ContaAbstrata> contas;
 
     public RepositorioContasAVL() {
         contas = new AVLTree<>();
@@ -69,13 +69,13 @@ public class RepositorioContasAVL implements IRepositorioContas {
     }
 
     @Override
-    public ContaAbstrata removeRoot() throws ContaInexistenteException, ArvoreVaziaException {
+    public ContaAbstrata removeRoot() throws ContaInexistenteException {
         if (!contas.isEmpty()) {
             ContaAbstrata conta = contas.getRoot().getInfo();
             contas.remove(conta);
             return conta;
         } else {
-            throw new ArvoreVaziaException();
+            return null;
         }
     }
 
@@ -83,7 +83,7 @@ public class RepositorioContasAVL implements IRepositorioContas {
     public ArrayList<ContaAbstrata> inorderIterate() throws ArvoreVaziaException {
         ArrayList<ContaAbstrata> list = new ArrayList<>();
         contas.inorderIterate(contas.getRoot(), list);
-        if (list != null) {
+        if (!list.isEmpty()) {
             return list;
         } else {
             throw new ArvoreVaziaException();
@@ -94,4 +94,5 @@ public class RepositorioContasAVL implements IRepositorioContas {
         AvlNode conta = contas.search(contas.getRoot(), (ContaAbstrata) (new ContaSimples(numero, null)));
         return conta != null ? conta : null;
     }
+
 }
