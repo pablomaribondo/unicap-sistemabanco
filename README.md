@@ -1,6 +1,6 @@
 # Projeto de Prática de Programação
 
-Projeto desenvolvido para a disiciplina de Estrutura de Dados II(INF1124) da Universidade Católica de Pernambuco(UNICAP).
+Projeto desenvolvido para a disiciplina de Prática de Programação(INF1124) da Universidade Católica de Pernambuco(UNICAP).
 
 **Exercício:** Desenvolver um sistema de cadastro bancário
 
